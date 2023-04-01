@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boggle</title>
+  <link rel="stylesheet" href="static/app.css">
+
+</head>
+
+<body>
+  <table>
+    {% for row in board %}
+    <tr>
+      {% for letter in row %}
+      <td>{{letter}}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+  <form action="/submitted" id="validate-form" method="POST">
+    <label for="word"> Guess a word: </label>
+    <input type="text" name="word" id="word" placeholder="word" />
+    <button type="submit"> Submit Guess </button>
+  </form>
+
+  <div id="words"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+
+</html>
