@@ -7,8 +7,8 @@ class BoggleGame {
     this.remainingTime = document.querySelector("#remaining-time");
     this.wordStatus = document.querySelector("#word-status");
     this.input = document.querySelector("#word");
+    //TODO: keep score in backend
     this.score = 0;
-    this.words = [];
     this.startGame();
   }
 
@@ -23,7 +23,6 @@ class BoggleGame {
         await axios.post("/submitted", { word: inputVal }).then((response) => {
           const word = { val: inputVal, status: response.data.result };
           this.displayStatus(word);
-          this.words.push(inputVal);
         });
       } catch (err) {
         console.log(err);
@@ -40,16 +39,16 @@ class BoggleGame {
     const wordLi = document.createElement("li");
     wordLi.innerHTML = `${word.val} +${word.val.length}`;
 
-    if (this.words.includes(word.val)) {
-      message = "You have already guessed this word :(";
-      messageColor = "badWord";
-    } else if (word.status === "ok") {
+    if (word.status === "ok") {
       message = "Great word!!";
       messageColor = "goodWord";
       this.score += word.val.length;
       this.wordsDiv.append(wordLi);
     } else if (word.status === "not-word") {
       message = "This word is not a word :(!!";
+      messageColor = "badWord";
+    } else if (word.status === "already-guessed") {
+      message = "This word is already guessed :(";
       messageColor = "badWord";
     } else {
       message = "This word is not on the board :(";

@@ -9,6 +9,7 @@ class Boggle():
     def __init__(self):
 
         self.words = self.read_dict("words.txt")
+        self.guessed_words = set()
 
     def read_dict(self, dict_path):
         """Read and return all words in dictionary."""
@@ -36,13 +37,23 @@ class Boggle():
         valid_word = self.find(board, word.upper())
 
         if word_exists and valid_word:
-            result = "ok"
+            if valid_word in self.guessed_words:
+                result = "already-guessed"
+            else:
+                result = "ok"
+                self.guessed_words.add(valid_word)
         elif word_exists and not valid_word:
             result = "not-on-board"
         else:
             result = "not-word"
 
         return result
+
+    def compute_score(self):
+        score = 0
+        for word in self.guessed_words:
+            score += len(word)
+        return score
 
     def find_from(self, board, word, y, x, seen):
         """Can we find a word on board, starting at x, y?"""
